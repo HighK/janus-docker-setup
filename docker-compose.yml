@@ -2,7 +2,7 @@ version: '2'
 
 services:
   janus:
-    image: limeklp/janus-ubunt18.04
+    image: ubuntu
     ports:
       - "81:81"
       - "443:443"
