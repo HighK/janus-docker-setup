@@ -1,1 +1,3 @@
 .git
+docker-compose copy.yml
+Dockerfile copy

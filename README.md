@@ -1,18 +1,10 @@
-# Janus gateway in a Docker Container
+# Janus gateway
 
-
-## Usage
-Assuming `docker` and `docker-compose` are installed:
+`docker-compose`
 
 Build the image
 ```shell
 $ docker build -t linagora/janus-gateway .
-```
-
-Run the container
-(Insert Static IP instead of `<YOUR DOCKER IP>`)
-```shell
-$ DOCKER_IP=<YOUR DOCKER IP> docker-compose up
 ```
 
 Where ports:
@@ -23,4 +15,4 @@ Where ports:
   - **10000-10200/udp**: Used during session establishment
 
 
-Edited [from this repo](https://github.com/linagora/docker-janus-gateway)
+origin [from this repo](https://github.com/linagora/docker-janus-gateway)

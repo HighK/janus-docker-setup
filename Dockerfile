@@ -36,7 +36,7 @@ RUN apt-get install -y sudo \
 
 #libnice
 RUN cd ~ \
-    && git clone https://gitlab.freedesktop.org/libnice/libnice \
+    && git clone -b 0.1.17 https://gitlab.freedesktop.org/libnice/libnice --single-branch \
     && cd libnice \
     && ./autogen.sh \
     && ./configure --prefix=/usr \
@@ -54,7 +54,7 @@ RUN cd ~ \
 #doxygen
 RUN apt-get install -y flex bison libqt4-dev
 RUN cd ~ \
-    && wget https://svwh.dl.sourceforge.net/project/doxygen/rel-1.8.11/doxygen-1.8.11.src.tar.gz \
+    && wget https://ftp.osuosl.org/pub/blfs/conglomeration/doxygen/doxygen-1.8.11.src.tar.gz \
     && gunzip doxygen-1.8.11.src.tar.gz \
     && tar xf doxygen-1.8.11.src.tar \
     && cd doxygen-1.8.11 \
@@ -68,30 +68,29 @@ RUN cd ~ \
 
 
 #usrsctp
-#RUN cd ~ \
-#    && git clone https://github.com/sctplab/usrsctp \
-#    && cd usrsctp \
-#    && ./bootstrap \
-#    && ./configure --prefix=/usr \
-#    && make \
-#    && sudo make install
+RUN cd ~ \
+   && git clone https://github.com/sctplab/usrsctp \
+   && cd usrsctp \
+   && ./bootstrap \
+   && ./configure --prefix=/usr \
+   && make \
+   && sudo make install
 
 #libwebsockets
-#RUN cd ~ \
-#    && git clone https://github.com/warmcat/libwebsockets.git \
-#    && cd libwebsockets \
-#    && git checkout v2.1.0 \
-#    && mkdir build \
-#    && cd build \
-#    && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. \
-#    && make \
-#    && sudo make install
+RUN cd ~ \
+   && git clone https://github.com/warmcat/libwebsockets.git \
+   && cd libwebsockets \
+   && mkdir build \
+   && cd build \
+   && cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr .. \
+   && make \
+   && sudo make install
 
 RUN cd ~ \
     && git clone https://github.com/meetecho/janus-gateway.git \
     && cd janus-gateway \
     && sh autogen.sh \
-    && ./configure --prefix=/opt/janus --disable-rabbitmq --disable-mqtt --enable-docs \
+    && ./configure --enable-docs --prefix=/opt/janus --disable-rabbitmq --disable-mqtt --enable-javascript-all-module=yes \
     && make CFLAGS='-std=c99' \
     && make install \
     && make configs \
@@ -107,4 +106,4 @@ COPY nginx/nginx.conf /etc/nginx/nginx.conf
 EXPOSE 80 7088 8088 8188 8089
 EXPOSE 10000-10200/udp
 
-CMD service nginx restart && /opt/janus/bin/janus --nat-1-1=${DOCKER_IP}
+CMD service nginx restart && /opt/janus/bin/janus --nat-1-1=0.0.0.0
